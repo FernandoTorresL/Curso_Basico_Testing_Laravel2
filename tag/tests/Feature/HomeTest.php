@@ -6,6 +6,9 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
+use App\Models\Tag;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
 class HomeTest extends TestCase
 {
     use RefreshDatabase;
@@ -16,5 +19,16 @@ class HomeTest extends TestCase
             ->get('/')
             ->assertStatus(200)
             ->assertSee('No hay etiquetas');
+    }
+
+    public function testWithData()
+    {
+        $tag =Tag::factory()->create();
+
+        $this
+            ->get('/')
+            ->assertStatus(200)
+            ->assertSee($tag->name)
+            ->assertDontSee('No hay etiquetas');
     }
 }
